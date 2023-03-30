@@ -1,55 +1,30 @@
 const axios = require('axios');
 
-const getAllCharacters = async () => {
-    let allCharacters = await axios.get("https://rickandmortyapi.com/api/charactr");
-    return allCharacters;
+console.log("Hola, aquí tienes el nombre y modelo de cada nave de Star Wars");
+
+const bringSpaceShips = async () => {
+    let spaceships = await axios.get("https://swapi.dev/api/starships/")
+    return spaceships;
 }
 
-const getAllLocations = async () => {
-    let allLocations = await axios.get("https://rickandmortyapi.com/api/location");
-    return allLocations;
-}
+let misNaves = [];
 
-getAllCharacters()
-    .then(
-        res => {
-            res.data.results.map( character => console.log(character.name))
-        }
+bringSpaceShips()
+    .then (
+        resultado => (
+            misNaves = Array.from(resultado.data.results)
+            )
+        )
+    .catch (
+        error => console.log(error)
     )
-    .catch(
-        err => {
-            switch (err.response.status) {
-                case 404:
-                    console.log("Página no encontrada");
-                    break;
-                case 501:
-                    console.log("Acceso no autorizado");
-                    break;
-                default:
-                    break;
-            }
-        }
-    );
 
+console.log(misNaves);
 
-    
-getAllLocations()
-.then(
-    res => {
-        res.data.results.map( location => console.log(location?.name))
+// muestra todas las naves con su indice
+const showAllShips = () => {
+    for (let i = 1; i < misNaves.length; i++) {
+        console.log(`${i} -> Nombre: ${misNaves[i].name} / Modelo: ${misNaves[i].model}`)
     }
-)
-.catch(
-    err => {
-        switch (err.response.status) {
-            case 404:
-                console.log("Página no encontrada");
-                break;
-            case 501:
-                console.log("Acceso no autorizado");
-                break;
-            default:
-                break;
-        }
-    }
-);
+}
+
